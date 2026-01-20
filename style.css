@@ -1,340 +1,342 @@
-:root {
-    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --text-main: #2d3748;
-}
+/**
+ * BaBa Translator - Core Logic
+ */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+const MAPPING = {
+    'A': 'Ba', 'B': 'BaBa', 'C': 'BaBaBa', 'D': 'Baa', 'E': 'BaaBa',
+    'F': 'BaaBaBa', 'G': 'Bab', 'H': 'BabBa', 'I': 'BabBab', 'J': 'Baaa',
+    'K': 'BaaaBa', 'L': 'BaaaBaBa', 'M': 'Baab', 'N': 'BaabBa', 'O': 'BaabBab',
+    'P': 'Baabb', 'Q': 'BaabbBa', 'R': 'BaabbBab', 'S': 'Babb', 'T': 'BabbBa',
+    'U': 'BabbBab', 'V': 'Babbb', 'W': 'BabbbBa', 'X': 'BabbbBab', 'Y': 'Baaaa',
+    'Z': 'BaaaaBa', ' ': '/', '.': '.', ',': ',',
+    // Arabic Mapping (Extended BaBa)
+    'ا': 'Baaaaaa', 'ب': 'BaaaaaaBa', 'ت': 'BaaaaaaBaBa', 'ث': 'Baaaaab', 'ج': 'BaaaaabBa',
+    'ح': 'BaaaaabBaBa', 'خ': 'Baaaaba', 'د': 'BaaaabaBa', 'ذ': 'BaaaabaBaBa', 'ر': 'Baaaabb',
+    'ز': 'BaaaabbBa', 'س': 'BaaaabbBaBa', 'ش': 'Baaaabbb', 'ص': 'BaaaabbbBa', 'ض': 'BaaaabbbBaBa',
+    'ط': 'Baaaabaa', 'ظ': 'BaaaabaaBa', 'ع': 'BaaaabaaBaBa', 'غ': 'Baaaabab', 'ف': 'BaaaababBa',
+    'ق': 'BaaaababBaBa', 'ك': 'Baaaabba', 'ل': 'BaaaabbaBa', 'م': 'BaaaabbaBaBa', 'ن': 'Baaaaabb',
+    'ه': 'BaaaaabbBa', 'و': 'BaaaaabbBaBa', 'ي': 'Baaaaabbb', 'ة': 'BaaaaabbbBa', 'ء': 'BaaaaabbbBaBa',
+    'أ': 'Baaaabaaa', 'إ': 'BaaaabaaaBa', 'آ': 'BaaaabaaaBaBa', 'ؤ': 'Baaaaabaab', 'ئ': 'BaaaaabaabBa'
+};
+const REVERSE_MAPPING = Object.fromEntries(Object.entries(MAPPING).map(([k, v]) => [v, k]));
 
-body {
-    font-family: var(--font-main);
-    color: var(--text-main);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    /* Animated Rainbow Background */
-    background: linear-gradient(-45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
+const TRANSLATIONS = {
+    en: {
+        title: "BaBa Translator",
+        subtitle: "The Happy Encryption Tool",
+        inputLabel: "Input (EN/AR)",
+        outputLabel: "BaBa Output",
+        copy: "COPY",
+        save: "Save File",
+        share: "Share Link",
+        map: "Key Map",
+        history: "Recent",
+        clear: "Clear All",
+        modalTitle: "Character Key",
+        inputPlaceholder: "Type something fun here...",
+        outputPlaceholder: "Magic translation...",
+        visualizerDefault: "Type to see the magic! 🌈",
+        soundOn: "🔊 Sound ON",
+        soundOff: "🔇 Sound OFF",
+        shareAlert: "Rainbow Link Copied! 🌈",
+        langBtn: "🇬🇧 EN"
+    },
+    ar: {
+        title: "مترجم با با",
+        subtitle: "أداة التشفير السعيدة",
+        inputLabel: "النص (عربي/إنجليزي)",
+        outputLabel: "مخرجات با با",
+        copy: "نسخ",
+        save: "حفظ الملف",
+        share: "مشاركة الرابط",
+        map: "خريطة المفاتيح",
+        history: "السجل",
+        clear: "مسح الكل",
+        modalTitle: "مفتاح الحروف",
+        inputPlaceholder: "اكتب شيئاً ممتعاً هنا...",
+        outputPlaceholder: "ترجمة سحرية...",
+        visualizerDefault: "اكتب شيئاً لترى السحر! 🌈",
+        soundOn: "🔊 صوت مفعل",
+        soundOff: "🔇 صوت معطل",
+        shareAlert: "تم نسخ الرابط! 🌈",
+        langBtn: "🇸🇦 AR"
+    }
+};
 
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
+/**
+ * Fun Audio System
+ */
+const AudioSys = {
+    ctx: null,
+    enabled: true,
+
+    init() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    },
+
+    toggle() {
+        this.enabled = !this.enabled;
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+        return this.enabled;
+    },
+
+    playTone(freq, type, duration) {
+        if (!this.enabled || !this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+        gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+    },
+
+    // Funky random pitch for typing
+    playType() {
+        // Random pentatonic-ish frequencies
+        const freqs = [330, 440, 494, 554, 660, 880];
+        const freq = freqs[Math.floor(Math.random() * freqs.length)];
+        this.playTone(freq, 'sine', 0.1);
+    },
+
+    playSuccess() {
+        this.playTone(554, 'sine', 0.1);
+        setTimeout(() => this.playTone(660, 'sine', 0.2), 100);
+    },
+
+    playClick() {
+        this.playTone(800, 'triangle', 0.05);
+    }
+};
+
+
+class App {
+    constructor() {
+        this.engInput = document.getElementById('input-eng');
+        this.babaInput = document.getElementById('input-baba');
+        this.visualizer = document.getElementById('visualizer');
+        this.historyLog = document.getElementById('history-log');
+
+        this.history = [];
+        this.ignoreEvent = false;
+        this.lang = 'en'; // Default language
+
+        // Init Audio on first interaction
+        document.body.addEventListener('click', () => AudioSys.init(), { once: true });
+        document.body.addEventListener('keydown', () => AudioSys.init(), { once: true });
+
+        // Event Listeners
+        this.engInput.addEventListener('input', () => this.handleEngInput());
+        this.babaInput.addEventListener('input', () => this.handleBabaInput());
+
+        // Initialize Map
+        this.renderMap();
+
+        // Check URL Hash for shared content
+        if (location.hash.length > 1) {
+            try {
+                const decoded = atob(decodeURIComponent(location.hash.substring(1)));
+                this.engInput.value = decoded;
+                this.handleEngInput();
+            } catch (e) { console.error("Invalid Hash"); }
+        }
     }
 
-    50% {
-        background-position: 100% 50%;
+    renderMap() {
+        const mapContent = document.getElementById('map-content');
+        if (mapContent) {
+            mapContent.className = 'mapping-grid';
+            mapContent.innerHTML = '';
+            for (let [k, v] of Object.entries(MAPPING)) {
+                mapContent.innerHTML += `
+                    <div class="map-item">
+                        <span class="map-char">${k === ' ' ? 'SPC' : k}</span>
+                        <span class="map-code">${v}</span>
+                    </div>`;
+            }
+        }
     }
 
-    100% {
-        background-position: 0% 50%;
+    handleEngInput() {
+        if (this.ignoreEvent) return;
+        AudioSys.playType();
+
+        const text = this.engInput.value.toUpperCase();
+        let result = [];
+        let visHTML = "";
+
+        for (let char of text) {
+            if (char === '\n') { result.push('\n'); visHTML += `<div style="width:100%"></div>`; continue; }
+            const mapped = MAPPING[char];
+            if (mapped) {
+                result.push(mapped);
+                visHTML += `<div class="chip"><span>${char}</span>${mapped}</div>`;
+            } else {
+                result.push(char);
+                visHTML += `<div class="chip" style="opacity:0.5; border-color:#ccc; color:#888;"><span>${char}</span>?</div>`;
+            }
+        }
+
+        this.ignoreEvent = true;
+        this.babaInput.value = result.join(' ');
+        this.ignoreEvent = false;
+
+        this.visualizer.innerHTML = visHTML || this.getVisualizerPlaceholder();
+        this.debouncedSave();
+    }
+
+    handleBabaInput() {
+        if (this.ignoreEvent) return;
+        AudioSys.playType();
+
+        const text = this.babaInput.value;
+        const tokens = text.split(/\s+/);
+        let result = "";
+        let visHTML = "";
+
+        for (let token of tokens) {
+            if (!token) continue;
+            const char = REVERSE_MAPPING[token];
+            if (char) {
+                result += char;
+                visHTML += `<div class="chip"><span>${char}</span>${token}</div>`;
+            } else {
+                result += "?";
+                visHTML += `<div class="chip" style="border-color:red; color:red;"><span>?</span>${token}</div>`;
+            }
+        }
+
+        this.ignoreEvent = true;
+        this.engInput.value = result;
+        this.ignoreEvent = false;
+
+        this.visualizer.innerHTML = visHTML || this.getVisualizerPlaceholder();
+        this.debouncedSave();
+    }
+
+    debouncedSave() {
+        clearTimeout(this.saveTimer);
+        this.saveTimer = setTimeout(() => this.addToHistory(this.engInput.value), 2000);
+    }
+
+    addToHistory(text) {
+        if (!text || (this.history.length > 0 && this.history[0] === text)) return;
+        this.history.unshift(text);
+        if (this.history.length > 20) this.history.pop();
+        this.renderHistory();
+    }
+
+    renderHistory() {
+        this.historyLog.innerHTML = this.history.map(t =>
+            `<div class="history-item" onclick="app.loadHistory('${t.replace(/'/g, "\\'")}')">${t.substring(0, 30)}${t.length > 30 ? '...' : ''}</div>`
+        ).join('');
+    }
+
+    loadHistory(text) {
+        this.engInput.value = text;
+        this.handleEngInput();
+        AudioSys.playSuccess();
+    }
+
+    copy(type) {
+        const el = type === 'eng' ? this.engInput : this.babaInput;
+        el.select();
+        document.execCommand('copy');
+        AudioSys.playSuccess();
+    }
+
+    clear() {
+        this.engInput.value = "";
+        this.babaInput.value = "";
+        this.visualizer.innerHTML = this.getVisualizerPlaceholder();
+        AudioSys.playClick();
+    }
+
+    download() {
+        const content = `SOURCE:\n${this.engInput.value}\n\nTRANSLATED:\n${this.babaInput.value}`;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'baba_rainbow.txt';
+        a.click();
+        AudioSys.playSuccess();
+    }
+
+    share() {
+        const b64 = btoa(this.engInput.value);
+        location.hash = b64;
+        navigator.clipboard.writeText(location.href);
+        alert(TRANSLATIONS[this.lang].shareAlert);
+        AudioSys.playSuccess();
+    }
+
+    toggleAudio() {
+        const enabled = AudioSys.toggle();
+        this.renderAudioBtn();
+    }
+
+    renderAudioBtn() {
+        const btn = document.getElementById('audio-btn');
+        const t = TRANSLATIONS[this.lang];
+        btn.innerHTML = AudioSys.enabled ? t.soundOn : t.soundOff;
+        btn.classList.toggle('muted', !AudioSys.enabled);
+    }
+
+    toggleLanguage() {
+        this.lang = this.lang === 'en' ? 'ar' : 'en';
+        this.updateUI();
+        AudioSys.playClick();
+    }
+
+    updateUI() {
+        const t = TRANSLATIONS[this.lang];
+        const isRTL = this.lang === 'ar';
+
+        document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+        document.getElementById('lang-btn').innerText = t.langBtn;
+
+        document.getElementById('app-title').innerText = t.title;
+        document.getElementById('app-subtitle').innerText = t.subtitle;
+        document.getElementById('label-input').innerText = t.inputLabel;
+        document.getElementById('label-output').innerText = t.outputLabel;
+
+        document.getElementById('btn-copy-input').innerText = t.copy;
+        document.getElementById('btn-copy-output').innerText = t.copy;
+
+        document.getElementById('text-save').innerText = t.save;
+        document.getElementById('text-share').innerText = t.share;
+        document.getElementById('text-map').innerText = t.map;
+        document.getElementById('label-history').innerText = t.history;
+        document.getElementById('text-clear').innerText = t.clear;
+        document.getElementById('modal-title').innerText = t.modalTitle;
+
+        this.engInput.placeholder = t.inputPlaceholder;
+        this.babaInput.placeholder = t.outputPlaceholder;
+
+        if (!this.engInput.value && !this.babaInput.value) {
+            this.visualizer.innerHTML = this.getVisualizerPlaceholder();
+        }
+
+        this.renderAudioBtn();
+    }
+
+    getVisualizerPlaceholder() {
+        return `<div style="width:100%; text-align:center; color:#999; margin-top:30px; font-weight:600;">${TRANSLATIONS[this.lang].visualizerDefault}</div>`;
+    }
+
+    toggleMap() {
+        document.getElementById('map-modal').classList.toggle('open');
+        AudioSys.playClick();
     }
 }
 
-.terminal-container {
-    width: 90vw;
-    height: 90vh;
-    background: rgba(255, 255, 255, 0.85);
-    /* Glassy white */
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-    border: 3px solid rgba(255, 255, 255, 0.5);
-}
-
-/* Header */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-}
-
-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    /* Rainbow Text */
-    background: linear-gradient(to right, #ff0000, #ff7300, #002bff, #7a00ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    letter-spacing: -1px;
-}
-
-.subtitle {
-    font-weight: 600;
-    color: #666;
-}
-
-/* Workspace */
-.workspace {
-    display: grid;
-    grid-template-columns: 1fr 1fr 250px;
-    gap: 20px;
-    flex: 1;
-    overflow: hidden;
-}
-
-.panel {
-    display: flex;
-    flex-direction: column;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 2px solid transparent;
-}
-
-.panel:focus-within {
-    /* Colorful border focus */
-    border-color: #002bff;
-    box-shadow: 0 0 15px rgba(0, 43, 255, 0.2);
-    transform: translateY(-2px);
-    background: white;
-}
-
-.panel-header {
-    padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    font-weight: 700;
-    color: #555;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.copy-btn {
-    background: linear-gradient(45deg, #FF512F, #DD2476);
-    border: none;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.copy-btn:hover {
-    transform: scale(1.05);
-}
-
-textarea {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 15px;
-    font-size: 1.1rem;
-    color: #333;
-    outline: none;
-    resize: none;
-}
-
-/* Buttons and Sidebar */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.tool-btn {
-    padding: 12px 16px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.tool-btn:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
-}
-
-.tool-btn:active {
-    transform: translateY(0);
-}
-
-/* Colorful Buttons */
-.tool-btn:nth-child(1) {
-    background: linear-gradient(45deg, #11998e, #38ef7d);
-}
-
-/* Green */
-.tool-btn:nth-child(2) {
-    background: linear-gradient(45deg, #00b4db, #0083b0);
-}
-
-/* Blue */
-.tool-btn:nth-child(3) {
-    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
-}
-
-/* Insta-ish */
-
-.tool-btn.danger {
-    background: linear-gradient(45deg, #cb2d3e, #ef473a);
-    margin-top: auto;
-}
-
-#audio-btn {
-    background: white;
-    color: #333;
-    border: 2px solid #ddd;
-}
-
-#audio-btn.muted {
-    color: #aaa;
-}
-
-/* History */
-#history-wrapper {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 12px;
-    padding: 10px;
-    overflow-y: auto;
-}
-
-#history-log {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.history-item {
-    padding: 8px;
-    background: white;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.history-item:hover {
-    transform: scale(1.02);
-    color: #002bff;
-}
-
-/* Visualizer Chips */
-.visualizer {
-    grid-column: 1 / -1;
-    height: 120px;
-    padding-top: 20px;
-    border-top: 2px solid rgba(0, 0, 0, 0.05);
-    overflow-y: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-content: flex-start;
-}
-
-.chip {
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    border: 2px solid transparent;
-    font-weight: bold;
-}
-
-/* Rainbow Borders for chips */
-.chip:nth-child(3n+1) {
-    border-color: #ff0000;
-    color: #ff0000;
-}
-
-.chip:nth-child(3n+2) {
-    border-color: #00b4db;
-    color: #00b4db;
-}
-
-.chip:nth-child(3n+3) {
-    border-color: #38ef7d;
-    color: #38ef7d;
-}
-
-.chip span {
-    background: #eee;
-    color: #333;
-    padding: 2px 6px;
-    border-radius: 50%;
-    margin-right: 8px;
-    font-size: 0.8em;
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(5px);
-}
-
-.modal.open {
-    display: flex;
-}
-
-.modal-content {
-    background: white;
-    width: 80%;
-    max-width: 600px;
-    max-height: 80vh;
-    border-radius: 20px;
-    padding: 30px;
-    overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-}
-
-.mapping-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 10px;
-}
-
-.map-item {
-    text-align: center;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 1px solid #eee;
-}
-
-.map-char {
-    font-weight: 900;
-    color: #333;
-    font-size: 1.2rem;
-}
-
-.map-code {
-    color: #666;
-    font-size: 0.8rem;
-    display: block;
-}
+const app = new App();
