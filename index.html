@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaBa Rainbow Translator </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="terminal-container">
+        <header>
+            <div>
+                <h1 id="app-title">BaBa Translator </h1>
+                <div id="app-subtitle" class="subtitle">The Happy Encryption Tool</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button id="lang-btn" class="tool-btn" onclick="app.toggleLanguage()">🇬🇧 EN</button>
+                <button id="audio-btn" class="tool-btn" onclick="app.toggleAudio()">🔊 Sound ON</button>
+            </div>
+        </header>
+
+        <div class="workspace">
+            <!-- English Input -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span id="label-input">English Input</span>
+                    <button id="btn-copy-input" class="copy-btn" onclick="app.copy('eng')">COPY</button>
+                </div>
+                <textarea id="input-eng" placeholder="Type something fun here..."></textarea>
+            </div>
+
+            <!-- BaBa Output -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span id="label-output">BaBa Output</span>
+                    <button id="btn-copy-output" class="copy-btn" onclick="app.copy('baba')">COPY</button>
+                </div>
+                <textarea id="input-baba" placeholder="Magic translation..."></textarea>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <button id="btn-save" class="tool-btn" onclick="app.download()">
+                    <span id="text-save">Save File</span>
+                    <span>💾</span>
+                </button>
+                <button id="btn-share" class="tool-btn" onclick="app.share()">
+                    <span id="text-share">Share Link</span>
+                    <span>🔗</span>
+                </button>
+                <button id="btn-map" class="tool-btn" onclick="app.toggleMap()">
+                    <span id="text-map">Key Map</span>
+                    <span>🗺️</span>
+                </button>
+
+                <div id="history-wrapper">
+                    <div id="label-history" style="font-weight:bold; color:#555; margin-bottom:10px;">Recent</div>
+                    <div id="history-log">
+                        <div style="padding:10px; color:#aaa; font-size:0.8rem; text-align:center;">No history yet</div>
+                    </div>
+                </div>
+
+                <button id="btn-clear" class="tool-btn danger" onclick="app.clear()">
+                    <span id="text-clear">Clear All</span>
+                    <span>✨</span>
+                </button>
+            </div>
+
+            <!-- Token Visualization -->
+            <div class="visualizer" id="visualizer">
+                <div style="width:100%; text-align:center; color:#999; margin-top:30px; font-weight:600;">Type to see
+                    the magic! </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapping Modal -->
+    <div id="map-modal" class="modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <h2 id="modal-title"> Character Key</h2>
+                <button class="tool-btn danger" style="padding:5px 15px;" onclick="app.toggleMap()">X</button>
+            </div>
+            <div id="map-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
