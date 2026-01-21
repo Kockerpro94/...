@@ -2,7 +2,7 @@
  * BaBa Translator - Core Logic
  */
 
-const MAPPING = {
+const BABA_MAPPING = {
     'A': 'Ba', 'B': 'BaBa', 'C': 'BaBaBa', 'D': 'Baa', 'E': 'BaaBa',
     'F': 'BaaBaBa', 'G': 'Bab', 'H': 'BabBa', 'I': 'BabBab', 'J': 'Baaa',
     'K': 'BaaaBa', 'L': 'BaaaBaBa', 'M': 'Baab', 'N': 'BaabBa', 'O': 'BaabBab',
@@ -18,7 +18,18 @@ const MAPPING = {
     'ه': 'BaaaaabbBa', 'و': 'BaaaaabbBaBa', 'ي': 'Baaaaabbb', 'ة': 'BaaaaabbbBa', 'ء': 'BaaaaabbbBaBa',
     'أ': 'Baaaabaaa', 'إ': 'BaaaabaaaBa', 'آ': 'BaaaabaaaBaBa', 'ؤ': 'Baaaaabaab', 'ئ': 'BaaaaabaabBa'
 };
-const REVERSE_MAPPING = Object.fromEntries(Object.entries(MAPPING).map(([k, v]) => [v, k]));
+
+const BOUGRAVIA_MAPPING = {
+    'A': 'Bouha', 'B': 'Bou', 'C': 'BouBou', 'D': 'BouBouha', 'E': 'Boua',
+    'F': 'Bouaha', 'G': 'BouBoua', 'H': 'Bouhah', 'I': 'Boui', 'J': 'Bouyaha',
+    'K': 'Bouka', 'L': 'Boula', 'M': 'Bouma', 'N': 'Bouna', 'O': 'Bouo',
+    'P': 'Boupa', 'Q': 'BouBouhaBou', 'R': 'Boura', 'S': 'Bousa', 'T': 'Bouta',
+    'U': 'Bouu', 'V': 'Bouvaha', 'W': 'BouBouBou', 'X': 'BouhaBou', 'Y': 'Bouya',
+    'Z': 'Bouzaha', ' ': ' ', '.': '.', ',': ','
+};
+
+let CURRENT_MAPPING = BABA_MAPPING;
+let REVERSE_MAPPING = Object.fromEntries(Object.entries(CURRENT_MAPPING).map(([k, v]) => [v, k]));
 
 const TRANSLATIONS = {
     en: {
@@ -42,7 +53,7 @@ const TRANSLATIONS = {
         langBtn: "🇬🇧 EN"
     },
     ar: {
-        title: "مترجم با با",
+        title: "مترجم",
         subtitle: "أداة التشفير السعيدة",
         inputLabel: "النص (عربي/إنجليزي)",
         outputLabel: "مخرجات با با",
@@ -60,6 +71,26 @@ const TRANSLATIONS = {
         soundOff: "🔇 صوت معطل",
         shareAlert: "تم نسخ الرابط! 🌈",
         langBtn: "🇸🇦 AR"
+    },
+    bou: {
+        title: "Bougravia Comms",
+        subtitle: "Anti-Gravity Systems",
+        inputLabel: "Input (Standard)",
+        outputLabel: "Bougravia Signal",
+        copy: "TRANSMIT",
+        save: "Save Log",
+        share: "Broadcast",
+        map: "Star Chart",
+        history: "Flight Log",
+        clear: "Jettison",
+        modalTitle: "Sonic Mapping",
+        inputPlaceholder: "Initiate drift sequence...",
+        outputPlaceholder: "Floating signals...",
+        visualizerDefault: "Drifting in zero-g... 🛸",
+        soundOn: "🔊 Audio: ON",
+        soundOff: "🔇 Audio: OFF",
+        shareAlert: "Signal Locked & Broadcasted! 📡",
+        langBtn: "👽 BOU"
     }
 };
 
@@ -156,7 +187,10 @@ class App {
         if (mapContent) {
             mapContent.className = 'mapping-grid';
             mapContent.innerHTML = '';
-            for (let [k, v] of Object.entries(MAPPING)) {
+            for (let [k, v] of Object.entries(CURRENT_MAPPING)) {
+                // Skip Arabic chars for map unless in AR mode (simplification)
+                if (k.charCodeAt(0) > 200 && this.lang !== 'ar') continue;
+
                 mapContent.innerHTML += `
                     <div class="map-item">
                         <span class="map-char">${k === ' ' ? 'SPC' : k}</span>
@@ -176,7 +210,7 @@ class App {
 
         for (let char of text) {
             if (char === '\n') { result.push('\n'); visHTML += `<div style="width:100%"></div>`; continue; }
-            const mapped = MAPPING[char];
+            const mapped = CURRENT_MAPPING[char];
             if (mapped) {
                 result.push(mapped);
                 visHTML += `<div class="chip"><span>${char}</span>${mapped}</div>`;
@@ -292,8 +326,23 @@ class App {
     }
 
     toggleLanguage() {
-        this.lang = this.lang === 'en' ? 'ar' : 'en';
+        if (this.lang === 'en') this.lang = 'ar';
+        else if (this.lang === 'ar') this.lang = 'bou';
+        else this.lang = 'en';
+
+        // Update Mapping Reference
+        if (this.lang === 'bou') {
+            CURRENT_MAPPING = BOUGRAVIA_MAPPING;
+        } else {
+            CURRENT_MAPPING = BABA_MAPPING;
+        }
+        REVERSE_MAPPING = Object.fromEntries(Object.entries(CURRENT_MAPPING).map(([k, v]) => [v, k]));
+
+        this.renderMap();
         this.updateUI();
+        // Re-process current input with new mapping
+        this.handleEngInput();
+
         AudioSys.playClick();
     }
 
