@@ -1,0 +1,28 @@
+# Dependency directories
+node_modules/
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+*.env
+
+# Secrets and Keys
+*.key
+*.pem
+*.cert
+*.crt
+*.pfx
+*.p12
+.ssh/
+
+# OS metadata
+.DS_Store
+
+# Build artifacts
+dist/
+build/
+out/
