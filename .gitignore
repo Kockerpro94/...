@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Secrets and Keys
+.env*
+*.key
+*.pem
+*.cert
+*.crt
+*.pfx
+*.p12
+.ssh/
+.npmrc
+
+# Logs
+*.log
+
+# OS/IDE Metadata
+.DS_Store
+.vscode/
+.idea/
+
+# Database dumps
+*.sql
+*.rdb
+
+# Build artifacts
+dist/
+build/
+out/
