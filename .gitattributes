@@ -1,0 +1,21 @@
+# Prevent sensitive files from being included in git archive exports
+.env* export-ignore
+*.key export-ignore
+*.pem export-ignore
+*.cert export-ignore
+*.crt export-ignore
+*.pfx export-ignore
+*.p12 export-ignore
+.ssh/ export-ignore
+.npmrc export-ignore
+*.secret export-ignore
+*.credentials export-ignore
+credentials.json export-ignore
+service-account.json export-ignore
+*.keystore export-ignore
+auth.json export-ignore
+secrets.json export-ignore
+
+# Exclude internal configurations
+.jules/ export-ignore
+.github/ export-ignore
