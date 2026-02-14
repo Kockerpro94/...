@@ -1,0 +1,25 @@
+# Secrets and Keys
+.env*
+*.key
+*.pem
+*.secret
+*.credentials
+auth.json
+secrets.json
+.npmrc
+
+# Dependencies and Build
+node_modules/
+dist/
+build/
+
+# Logs and IDE
+*.log
+.vscode/
+.idea/
+.DS_Store
+
+# Databases and Coverage
+*.sql
+*.sqlite
+coverage/
