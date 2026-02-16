@@ -1,0 +1,9 @@
+{
+  "name": "sentinel-baseline",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "echo 'No linting needed for baseline' && exit 0",
+    "test": "echo 'No tests needed for baseline' && exit 0"
+  }
+}
