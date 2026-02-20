@@ -1,0 +1,6 @@
+# Prevent sensitive files from being included in git archive exports
+.env* export-ignore
+*.key export-ignore
+*.pem export-ignore
+.jules/ export-ignore
+.github/ export-ignore
