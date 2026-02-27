@@ -1,0 +1,8 @@
+{
+  "name": "security-baseline",
+  "private": true,
+  "scripts": {
+    "test": "echo 'No tests yet' && exit 0",
+    "lint": "echo 'No linting yet' && exit 0"
+  }
+}
