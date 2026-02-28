@@ -1,0 +1,6 @@
+# Security sensitive files require security team review
+.gitignore @security-team
+.gitattributes @security-team
+SECURITY.md @security-team
+.jules/ @security-team
+.github/ @security-team
