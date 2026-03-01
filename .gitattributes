@@ -1,0 +1,8 @@
+# Prevent secrets from being included in git archives
+*.key export-ignore
+*.pem export-ignore
+.env* export-ignore
+
+# Internal directories
+.jules/ export-ignore
+.github/ export-ignore
