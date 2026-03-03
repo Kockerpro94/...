@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.env*
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.key
+*.pem
+*.secret
+*.credentials
+auth.json
+secrets.json
+*.sql
+*.sqlite
