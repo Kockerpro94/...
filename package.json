@@ -1,0 +1,8 @@
+{
+  "name": "security-baseline",
+  "private": true,
+  "scripts": {
+    "test": "exit 0",
+    "lint": "exit 0"
+  }
+}
