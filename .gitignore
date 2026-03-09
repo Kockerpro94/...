@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+*.log
+.DS_Store
