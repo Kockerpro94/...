@@ -1,0 +1,8 @@
+.jules/ export-ignore
+.github/ export-ignore
+.env* export-ignore
+*.key export-ignore
+*.pem export-ignore
+*.secret export-ignore
+auth.json export-ignore
+secrets.json export-ignore
