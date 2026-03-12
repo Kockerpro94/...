@@ -1,0 +1,9 @@
+{
+  "name": "sentinel-security-baseline",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "exit 0",
+    "lint": "exit 0"
+  }
+}
