@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Secrets and credentials
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# System files
+.DS_Store
+Thumbs.db
