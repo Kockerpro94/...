@@ -1,0 +1,21 @@
+# Prevent sensitive files and dependencies from being committed
+node_modules/
+dist/
+build/
+out/
+
+# SEC: Avoid committing secrets or environment configs
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# Logs and system files
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/
