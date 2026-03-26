@@ -1,0 +1,12 @@
+# Internal directories
+.jules/ export-ignore
+.github/ export-ignore
+
+# Secrets and sensitive files
+.env* export-ignore
+*.key export-ignore
+*.pem export-ignore
+*.secret export-ignore
+auth.json export-ignore
+secrets.json export-ignore
+config/local-*.json export-ignore

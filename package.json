@@ -1,0 +1,9 @@
+{
+  "name": "project-root",
+  "private": true,
+  "description": "Minimal configuration to establish a security baseline and enable standard environment checks.",
+  "scripts": {
+    "test": "echo 'No tests yet' && exit 0",
+    "lint": "echo 'No linting yet' && exit 0"
+  }
+}
