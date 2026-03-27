@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+out/
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
