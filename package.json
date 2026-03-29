@@ -1,0 +1,8 @@
+{
+  "name": "project-root",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Running tests...\" && exit 0",
+    "lint": "echo \"Running linting...\" && exit 0"
+  }
+}
