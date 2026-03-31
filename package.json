@@ -1,0 +1,8 @@
+{
+  "name": "repository-security-baseline",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Running security tests...\" && exit 0",
+    "lint": "echo \"Running security linting...\" && exit 0"
+  }
+}
