@@ -1,0 +1,10 @@
+{
+  "name": "repository-security-baseline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Establishment of a security baseline to protect against secret leakage and provide a security policy.",
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0",
+    "lint": "echo \"No linting required\" && exit 0"
+  }
+}
