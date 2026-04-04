@@ -1,0 +1,40 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build artifacts
+dist/
+build/
+out/
+target/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Environment files and secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.classpath
+.factorypath
+.settings/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Ensure CI and Security configurations are NOT ignored
+!.github/
+!.jules/
