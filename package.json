@@ -1,0 +1,13 @@
+{
+  "name": "repository-security-baseline",
+  "version": "1.0.0",
+  "description": "Establish security baseline standards.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests defined\" && exit 0",
+    "lint": "echo \"No linting defined\" && exit 0"
+  },
+  "keywords": [],
+  "author": "Sentinel",
+  "license": "ISC"
+}
