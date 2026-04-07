@@ -1,0 +1,13 @@
+{
+  "name": "repository-security-baseline",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo 'No tests yet' && exit 0",
+    "lint": "echo 'No lint rules yet' && exit 0"
+  },
+  "engines": {
+    "node": ">=22.22.1",
+    "pnpm": ">=10.30.3"
+  }
+}
