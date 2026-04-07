@@ -1,0 +1,19 @@
+# Dependencies/build
+node_modules/
+dist/
+build/
+out/
+# Logs/system
+*.log
+.DS_Store
+# IDEs
+.vscode/
+.idea/
+# Secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
