@@ -1,0 +1,8 @@
+{
+  "name": "repository-security-baseline",
+  "private": true,
+  "description": "Minimal security baseline for the repository",
+  "engines": {
+    "node": ">=22"
+  }
+}
