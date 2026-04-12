@@ -1,0 +1,5 @@
+{
+  "name": "repository-security-baseline",
+  "private": true,
+  "description": "Foundational security baseline for the repository"
+}
