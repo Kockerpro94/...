@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Build & Outputs
+dist/
+build/
+out/
+*.log
+
+# System & IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
