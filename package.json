@@ -1,0 +1,7 @@
+{
+  "name": "repository-security-baseline",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  }
+}
