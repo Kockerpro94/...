@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+out/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
