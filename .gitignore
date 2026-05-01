@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+pnpm-debug.log*
+
+# Build artifacts
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Secrets and sensitive data
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# System and IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.env.local
