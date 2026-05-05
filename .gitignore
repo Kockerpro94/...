@@ -1,0 +1,14 @@
+node_modules/
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+*.log
+dist/
+build/
+.DS_Store
+.vscode/
+.idea/
