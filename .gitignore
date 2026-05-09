@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+.npm/
+
+# Secrets and Credentials
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
