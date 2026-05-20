@@ -1,0 +1,24 @@
+# Dependency directories
+node_modules/
+dist/
+build/
+
+# Secrets and credentials
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# OS and IDE files
+.DS_Store
+.vscode/
+.idea/
+.terraform/
+.serverless/
