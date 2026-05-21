@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+.pnpm-debug.log*
+
+# Secrets & Credentials
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
