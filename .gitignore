@@ -1,0 +1,20 @@
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
