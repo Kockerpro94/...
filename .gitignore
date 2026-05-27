@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+dist/
+build/
+
+# Secrets and Credentials
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
