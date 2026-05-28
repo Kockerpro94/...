@@ -1,0 +1,16 @@
+node_modules/
+.pnpm-debug.log*
+dist/
+build/
+*.tsbuildinfo
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
