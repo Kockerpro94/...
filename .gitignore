@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+
+# Build artifacts
+dist/
+build/
+target/
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Secrets and sensitive files
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
