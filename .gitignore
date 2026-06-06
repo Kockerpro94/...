@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# Misc
+.DS_Store
+coverage/
