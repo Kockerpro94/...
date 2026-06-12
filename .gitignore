@@ -1,0 +1,23 @@
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+pnpm-debug.log*
+
+# Secrets and Credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# IDEs and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
