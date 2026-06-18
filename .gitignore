@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+pnpm-debug.log*
+
+# Environment and Secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# OS and Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Testing
+coverage/
+.vitest-result/
