@@ -1,0 +1,9 @@
+{
+  "name": "repository-security-baseline",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Foundational security baseline",
+  "engines": {
+    "node": ">=22"
+  }
+}
