@@ -1,0 +1,23 @@
+# Dependency and Build
+node_modules/
+dist/
+build/
+.next/
+.cache/
+
+# Logs
+*.log
+
+# Environment variables and secrets
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# IDE and System files
+.vscode/
+.idea/
+.DS_Store
