@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Secrets and Credentials
+.env*
+*.key
+*.pem
+*.secret
+auth.json
+secrets.json
+config/local-*.json
+
+# Build and IDE
+dist/
+build/
+.cache/
+.vscode/
+.idea/
+*.log
+*.swp
+*.bak
+
+# System Files
+.DS_Store
+Thumbs.db
